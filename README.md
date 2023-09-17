@@ -29,10 +29,78 @@ O medidor de energia (MeterWatt) é colocado em cada tomada da casa para medir o
    - A porta OUT do ACS712 está conectada à porta VP do ESP32.
 
 2. **Código do Processo**:
-   - O código no ESP32 realiza a leitura da corrente elétrica da tomada por meio do sensor ACS712.
-   - O sensor é calibrado para garantir leituras precisas.
-   - O código calcula a corrente de pico e a corrente eficaz.
-   - Os valores da corrente são impressos no monitor serial para exibição.
+
+int pino_sensor = 36;
+int menor_valor;
+int valor_lido;
+int menor_valor_acumulado = 0;
+int ZERO_SENSOR = 0;
+float corrente_pico;
+float corrente_eficaz;
+double maior_valor=0;
+double corrente_valor=0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(pino_sensor,INPUT);
+delay(3000);
+ //Fazer o AUTO-ZERO do sensor
+Serial.println("Fazendo o Auto ZERO do Sensor...");
+menor_valor = 4095;
+ 
+  for(int i = 0; i < 10000 ; i++){
+  valor_lido = analogRead(pino_sensor);
+  if(valor_lido < menor_valor){
+  menor_valor = valor_lido;    
+  }
+  delayMicroseconds(1);  
+  }
+  ZERO_SENSOR = menor_valor;
+  Serial.print("Zero do Sensor:");
+  Serial.println(ZERO_SENSOR);
+  delay(3000)
+ }
+
+void loop() {
+
+  //Zerar valores
+  menor_valor = 4095;
+ 
+  for(int i = 0; i < 1600 ; i++){
+  valor_lido = analogRead(pino_sensor);
+  if(valor_lido < menor_valor){
+  menor_valor = valor_lido;    
+  }
+  delayMicroseconds(10);  
+  }
+
+  
+  Serial.print("Menor Valor:");
+  Serial.println(menor_valor);
+  
+  //Transformar o maior valor em corrente de pico
+  corrente_pico = ZERO_SENSOR - menor_valor; 
+  corrente_pico = corrente_pico*0.805; // 
+  corrente_pico = corrente_pico/66;   // COnverter o valor de tensão para corrente de acordo com o modelo do sensor. No meu caso, esta sensibilidade vale 66mV/                       
+  Serial.print("Corrente de Pico:");
+  Serial.print(corrente_pico);
+  Serial.print(" A");
+  Serial.print("     ");
+  Serial.print(corrente_pico*1000);
+  Serial.println(" mA");
+  
+ 
+  //Converter para corrente eficaz  
+  corrente_eficaz = corrente_pico/1.4;
+  Serial.print("Corrente Eficaz:");
+  Serial.print(corrente_eficaz);
+  Serial.print(" A");
+  Serial.print("     ");
+  Serial.print(corrente_eficaz*1000);
+  Serial.println(" mA");
+ 
+ delay(5000);
+}
 
 ## Instruções de Uso
 
