@@ -1,7 +1,7 @@
 # sprint.edge
 # README - Medidor de Energia IoT com Docker Compose
 
-Este é um projeto que demonstra a implementação de um medidor de energia IoT utilizando um medidor de corrente ACS712 de 30A, um microcontrolador ESP32, e um conversor de energia para 5V. Além do IoT, projeto faz uso de uma API para a criação e visualização dos dados no dashboard. 
+Este é um projeto que demonstra a implementação de um medidor de energia IoT utilizando um medidor de corrente ACS712 de 30A, um microcontrolador ESP32, e um conversor de energia para 5V. Além do IoT, projeto faz uso de uma API em Flask para a criação e visualização dos dados no dashboard. 
 
 ### Hardware:
 - Dispositivos IoT (medidores de energia) - um para cada tomada a ser monitorada.
@@ -321,15 +321,7 @@ void loop()
    - Certifique-se de que os dispositivos IoT estejam instalados em cada tomada.
 
 2. **Configuração do Software**:
-   - Certifique-se de ter o Docker Compose instalado na sua máquina.
-
-3. **Execução do Projeto IoT**:
-   - Clone este repositório git https://github.com/fabiocabrini/fiware
-   - Use o Docker Compose para iniciar os serviços do backend e frontend da aplicação IoT.
-
-   ```bash
-   docker-compose up -d
-   ```
+   - Certifique que as bibliotecas estejam instaladas, assim como o Flask no Python
 
 4. **Acessando o Frontend**:
    - Para obter acesso ao Frontend, será necessário executar a API localmente em Python com o seguinte codigo:
